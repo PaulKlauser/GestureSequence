@@ -12,3 +12,7 @@ GestureSequence.Builder(view)
     .longPress()
     .applyToView { action() }
 ```
+
+Supported gestures:
+* Tap
+* Long press

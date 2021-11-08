@@ -1,6 +1,6 @@
 # GestureSequence
 
-Playground for building a library to enable easy composition of gesture sequence recognition on a view.
+A basic library that enables easy composition of gesture sequence recognition on a view.
 
 Basic API looks like:
 

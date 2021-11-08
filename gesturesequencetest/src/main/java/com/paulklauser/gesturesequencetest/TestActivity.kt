@@ -1,27 +1,27 @@
-package com.paulklauser.gesturedetector
+package com.paulklauser.gesturesequencetest
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import timber.log.Timber
+import com.paulklauser.gesturesequence.Gesture
+import com.paulklauser.gesturesequence.GestureSequence
 
 private const val ARG_GESTURES = "gestures"
 
 fun createActivityIntent(context: Context, vararg gestures: Gesture): Intent {
-    return Intent(context, MainActivity::class.java)
+    return Intent(context, TestActivity::class.java)
         .putParcelableArrayListExtra(ARG_GESTURES, ArrayList(gestures.toList()))
 }
 
-class MainActivity : AppCompatActivity() {
+class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.plant(Timber.DebugTree())
         setContentView(R.layout.activity_main)
         val gestures: List<Gesture> =
             intent?.extras?.getParcelableArrayList(ARG_GESTURES)
-                ?: listOf(Gesture.Tap, Gesture.Tap, Gesture.LongPress)
+                ?: throw IllegalArgumentException("No gestures passed to the test activity!")
 
         GestureSequence.Builder(findViewById(R.id.hello_world))
             .apply {

@@ -1,11 +1,10 @@
-package com.paulklauser.gesturedetector
+package com.paulklauser.gesturesequence
 
 import android.annotation.SuppressLint
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import com.paulklauser.gesturedetector.GestureSequence.Builder
-import timber.log.Timber
+import com.paulklauser.gesturesequence.GestureSequence.Builder
 import java.util.*
 
 // Timeout between gestures in a sequence
@@ -36,7 +35,6 @@ class GestureSequence private constructor(
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            Timber.d("Gestures Queue: $gesturesQueue")
             checkTime()
             if (gesturesQueue.poll() != Gesture.Tap) {
                 eventComplete()
@@ -55,7 +53,6 @@ class GestureSequence private constructor(
         }
 
         override fun onLongPress(e: MotionEvent) {
-            Timber.d("Gestures Queue: $gesturesQueue")
             checkTime()
             if (gesturesQueue.poll() != Gesture.LongPress) {
                 eventComplete()

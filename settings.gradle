@@ -8,3 +8,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GestureDetector"
 include ':app'
+include ':gesturesequence'
+include ':gesturesequencetest'

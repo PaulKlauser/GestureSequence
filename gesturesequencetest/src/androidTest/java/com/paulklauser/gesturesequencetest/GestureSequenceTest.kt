@@ -1,4 +1,4 @@
-package com.paulklauser.gesturedetector
+package com.paulklauser.gesturesequencetest
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.paulklauser.gesturesequence.Gesture
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -17,7 +18,7 @@ class GestureSequenceTest {
 
     @Test
     fun tap_tap_long_press_sequence() {
-        ActivityScenario.launch<MainActivity>(
+        ActivityScenario.launch<TestActivity>(
             createActivityIntent(
                 InstrumentationRegistry.getInstrumentation().targetContext,
                 Gesture.Tap, Gesture.Tap, Gesture.LongPress
@@ -37,7 +38,7 @@ class GestureSequenceTest {
 
     @Test
     fun tap_tap_tap_sequence() {
-        ActivityScenario.launch<MainActivity>(
+        ActivityScenario.launch<TestActivity>(
             createActivityIntent(
                 InstrumentationRegistry.getInstrumentation().targetContext,
                 Gesture.Tap, Gesture.Tap, Gesture.Tap

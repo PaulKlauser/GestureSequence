@@ -1,4 +1,4 @@
-package com.paulklauser.gesturedetector
+package com.paulklauser.gesturesequence
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

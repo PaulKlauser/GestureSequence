@@ -26,7 +26,14 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Decode GPG Key
-        run: echo $ENCODED_SIGNING_KEY | base64 -d > "$GPG_KEY_PATH"
+        env:
+            ENCODED_SIGNING_KEY: ${{ secrets.ENCODED_SIGNING_KEY }}
+            GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
+        run: echo $ENCODED_SIGNING_KEY | base64 -d > $GPG_KEY_PATH
 
       - name: Publish to maven local
+        env:
+            GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
+            SIGNING_KEY_ID: ${{ secrets.GPG_KEY_PATH }}
+            SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: ./gradlew gesturesequence:publishReleasePublicationToMavenLocal

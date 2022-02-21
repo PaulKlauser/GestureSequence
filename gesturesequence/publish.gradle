@@ -6,15 +6,16 @@ task androidSourcesJar(type: Jar) {
 ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
 ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
 ext["signing.secretKeyRingFile"] = rootProject.rootDir.absolutePath + "/" + System.getenv('GPG_KEY_PATH')
+ext["sonatypeUsername"] = System.getenv('SONATYPE_USERNAME')
+ext["sonatypePassword"] = System.getenv('SONATYPE_PASSWORD')
 
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.paulklauser'
+                groupId = 'io.github.paulklauser'
                 artifactId = 'gesturesequence'
-                version = '0.1'
                 pom {
                     name = 'Gesture Sequence'
                     description = 'A basic library that enables easy composition of gesture sequence recognition on a view.'
@@ -47,8 +48,8 @@ afterEvaluate {
                 def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots'
                 url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
                 credentials {
-                    username project.findProperty('sonatype.username')
-                    password project.findProperty('sonatype.password')
+                    username sonatypeUsername
+                    password sonatypePassword
                 }
             }
         }

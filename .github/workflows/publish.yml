@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Decode GPG Key
+        env:
+          ENCODED_SIGNING_KEY: ${{ secrets.ENCODED_SIGNING_KEY }}
+          GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
+        run: echo $ENCODED_SIGNING_KEY | base64 -d > $GPG_KEY_PATH
+
+      - name: Publish to maven central
+        env:
+          GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: ./gradlew gesturesequence:publishReleasePublicationToMavenRepository

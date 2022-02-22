@@ -1,4 +1,4 @@
-name: Build
+name: Build & Publish
 # TODO: Run tests
 
 on:

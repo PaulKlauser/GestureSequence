@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -28,6 +30,16 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    testOptions {
+        devices {
+            pixel2api29 (ManagedVirtualDevice) {
+                device = "Pixel 2"
+                apiLevel = 30
+                systemImageSource = "aosp-atd"
+                abi = "x86"
+            }
+        }
     }
 }
 

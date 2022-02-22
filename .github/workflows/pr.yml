@@ -11,5 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Assemble
-        run: ./gradlew gesturesequence:assembleRelease
+      - name: Test
+        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest -Pandroid.sdk.channel=3

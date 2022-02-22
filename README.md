@@ -16,3 +16,10 @@ GestureSequence.Builder(view)
 Supported gestures:
 * Tap
 * Long press
+
+## Gradle Dependency
+
+Make sure you have `mavenCentral()` in your repositories block
+```groovy
+implementation 'io.github.paulklauser:gesturesequence:0.2'
+```

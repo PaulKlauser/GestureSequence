@@ -15,4 +15,4 @@ jobs:
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Test
-        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest -Pandroid.sdk.channel=3
+        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest -Pandroid.sdk.channel=3 -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"

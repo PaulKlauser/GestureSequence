@@ -1,12 +1,13 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
-
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.firebase.testlab'
 }
 
 android {
     compileSdk 31
+
+    namespace 'com.paulklauser.gesturesequencetest'
 
     defaultConfig {
         applicationId "com.paulklauser.gesturesequencetest2"
@@ -32,11 +33,13 @@ android {
         jvmTarget = '1.8'
     }
     testOptions {
-        devices {
-            pixel2api29 (ManagedVirtualDevice) {
-                device = "Pixel 2"
-                apiLevel = 30
-                systemImageSource = "aosp-atd"
+        managedDevices {
+            devices {
+                Pixel2(com.google.firebase.testlab.gradle.ManagedDevice) {
+                    device = "Pixel2"
+                    apiLevel = 30
+//                systemImageSource = "aosp-atd"
+                }
             }
         }
     }

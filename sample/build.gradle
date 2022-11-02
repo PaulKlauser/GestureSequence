@@ -6,6 +6,8 @@ plugins {
 android {
     compileSdk 31
 
+    namespace 'com.paulklauser.gesturedetector'
+
     defaultConfig {
         applicationId "com.paulklauser.gesturedetector"
         minSdk 21

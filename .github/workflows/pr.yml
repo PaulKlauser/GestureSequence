@@ -1,5 +1,4 @@
 name: Build
-# TODO: Run tests
 
 on:
   pull_request:
@@ -11,8 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
       - name: Accept Licenses
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Test
-        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest -Pandroid.sdk.channel=3 -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest

@@ -17,8 +17,14 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Accept Licenses
-        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+#      - name: Accept Licenses
+#        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
-      - name: Test
-        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest
+#      - name: Test
+#        run: ./gradlew gesturesequencetest:pixel2api29DebugAndroidTest
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck

@@ -28,3 +28,10 @@ jobs:
         with:
           api-level: 29
           script: ./gradlew connectedCheck
+
+      - name: Upload screenies
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenies
+          path: gesturesequencetest/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected

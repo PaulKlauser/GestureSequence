@@ -34,7 +34,7 @@ class GestureSequenceTest {
             .perform(longClick())
 
         onView(withId(R.id.success))
-            .check(matches(isDisplayed()))
+            .check(matches(not(isDisplayed())))
     }
 
     @Test

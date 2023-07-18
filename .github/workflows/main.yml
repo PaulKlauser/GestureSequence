@@ -3,15 +3,11 @@ name: Build & Publish
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-
-  device-tests:
-    uses: ./.github/workflows/device-tests.yml
-    secrets: inherit
-
   build-and-deploy:
-    needs: device-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,13 +19,36 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: ${{ secrets.GCLOUD_JSON_KEY }}
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          project_id: maintenance-log-9b4eb
+
+      - name: 'Assemble Test APKs'
+        run: ./gradlew gesturesequencetest:assembleDebug gesturesequencetest:assembleDebugAndroidTest
+
+      - name: 'Run Tests'
+        run: |
+          gcloud firebase test android run \
+          --type instrumentation \
+          --app gesturesequencetest/build/outputs/apk/debug/gesturesequencetest-debug.apk \
+          --test gesturesequencetest/build/outputs/apk/androidTest/debug/gesturesequencetest-debug-androidTest.apk \
+          --device model=Pixel2.arm,version=33,locale=en,orientation=portrait  \
+
       - name: Decode GPG Key
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           ENCODED_SIGNING_KEY: ${{ secrets.ENCODED_SIGNING_KEY }}
           GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
         run: echo $ENCODED_SIGNING_KEY | base64 -d > $GPG_KEY_PATH
 
       - name: Publish to maven central
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           GPG_KEY_PATH: ${{ secrets.GPG_KEY_PATH }}
           SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}

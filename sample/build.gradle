@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.paulklauser.sample'
     compileSdk 31
 
     defaultConfig {

@@ -19,26 +19,45 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: ${{ secrets.GCLOUD_JSON_KEY }}
-
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
-        with:
-          project_id: maintenance-log-9b4eb
-
+#      - name: 'Authenticate to Google Cloud'
+#        uses: 'google-github-actions/auth@v1'
+#        with:
+#          credentials_json: ${{ secrets.GCLOUD_JSON_KEY }}
+#
+#      - name: 'Set up Cloud SDK'
+#        uses: 'google-github-actions/setup-gcloud@v1'
+#        with:
+#          project_id: maintenance-log-9b4eb
+#
       - name: 'Assemble Test APKs'
         run: ./gradlew gesturesequencetest:assembleDebug gesturesequencetest:assembleDebugAndroidTest
+#
+#      - name: 'Run Tests'
+#        run: |
+#          gcloud firebase test android run \
+#          --type instrumentation \
+#          --app gesturesequencetest/build/outputs/apk/debug/gesturesequencetest-debug.apk \
+#          --test gesturesequencetest/build/outputs/apk/androidTest/debug/gesturesequencetest-debug-androidTest.apk \
+#          --device model=Pixel2.arm,version=33,locale=en,orientation=portrait  \
 
-      - name: 'Run Tests'
-        run: |
-          gcloud firebase test android run \
-          --type instrumentation \
-          --app gesturesequencetest/build/outputs/apk/debug/gesturesequencetest-debug.apk \
-          --test gesturesequencetest/build/outputs/apk/androidTest/debug/gesturesequencetest-debug-androidTest.apk \
-          --device model=Pixel2.arm,version=33,locale=en,orientation=portrait  \
+      - name: flank run
+        id: flank_run
+        uses: Flank/flank@master
+        with:
+          # Flank version to run
+          version: v21.03.1
+          # Service account file content from secrets
+          service_account: ${{ secrets.GCLOUD_JSON_KEY }}
+          # Run Android tests
+          platform: android
+          # Path to configuration file from local repo
+          flank_configuration_file: 'flank.yml'
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: flank
 
       - name: Decode GPG Key
         if: ${{ github.event_name != 'pull_request' }}
